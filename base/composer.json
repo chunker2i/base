@@ -1,5 +1,6 @@
 {
 	"name": "chunker2i/base",
+	"description": "Base package of Chunker framework",
 	"type": "library",
 	"license": "MIT",
 	"autoload": {
