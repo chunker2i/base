@@ -7,7 +7,7 @@
 			"Chunker2i\\Base\\": "src/"
 		}
 	},
-	"minimum-stability": "dev",
+	"minimum-stability": "stable",
 	"extra": {
 		"laravel": {
 			"providers": [

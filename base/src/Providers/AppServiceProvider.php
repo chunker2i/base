@@ -9,6 +9,8 @@ class AppServiceProvider extends ServiceProvider
 	}
 
 	public function boot():void {
-		//
+		$this->publishes([
+			__DIR__ . '/../../resources/scss/config/_colors.scss' => resource_path('scss/config/_colors.scss'),
+		]);
 	}
 }

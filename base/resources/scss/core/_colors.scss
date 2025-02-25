@@ -1,0 +1,112 @@
+@use "sass:color";
+@use "sass:meta";
+@use "sass:math";
+@use "sass:map";
+
+// Пробрасываем базовые цвета из конфига дальше,
+// чтобы к ним можно было обращаться и было удобно
+// использовать через автоподстановку в IDE
+@forward "@config/colors";
+
+// А здесь подключаем цвета для пользования внутри модуля
+@use "@config/colors" as config;
+
+
+
+
+/**
+ * Генерация внутреннего массива с оттенками цветов из конфига
+ *
+ * Файл с конфигом цветов сканируются, из него берутся переменные с цветами.
+ * Каждая переменная с цветом — это базовый цвет. Для каждого базового цвета
+ * создаётся массив с 4 элементами:
+ *  `base` — сам базовый цвет, который и был указан в конфиге с цветами
+ *  `light` — светлый оттенок базового цвета
+ *  `dark` — тёмный оттенок базового цвета
+ *  `content` — цвет контента: если базовый цвет тёмный, то контент будет белым,
+                а если базовый цвет светлый, то контент будет тёмно-серым.
+ */
+$_base-colors: meta.module-variables(config);
+$_result-colors: ();
+@each $_name, $_value in $_base-colors {
+	// Обрабатываем только цвета
+	@if (meta.type-of($_value) == 'color') {
+
+		// Подготовка массива с оттенками
+		$_shades: (
+			"base": $_value,
+			"light": color.adjust($_value, $lightness: 10%),
+			"dark": color.adjust($_value, $lightness: -10%)
+		);
+
+		// Считаем светлоту цвета.
+		// Каждый канал имеет разный вес в светлоте цвета,
+		// поэтому необходимо использовать коэффициенты.
+		$_brightness: 0.299 * color.channel($_value, "red");
+		$_brightness: $_brightness + 0.587 * color.channel($_value, "green");
+		$_brightness: $_brightness + 0.114 * color.channel($_value, "blue");
+		$_brightness: math.div($_brightness, 255) * 100%;
+
+		// Определение цвета контента в зависимости от светлоты базового цвета
+		@if $_brightness > 50% {
+			$_shades: map.set($_shades, 'content', #222);
+		} @else {
+			$_shades: map.set($_shades, 'content', #fff);
+		}
+
+		// Сохранение массива с оттенками в массив с цветами
+		$_result-colors: map.set($_result-colors, $_name, $_shades);
+
+	}
+}
+
+/**
+ * Получить название цвета по значению
+ */
+@function _get-color-name($color) {
+	@each $_name, $_value in $_base-colors {
+		@if $color == $_value {
+			@return $_name;
+		}
+	}
+}
+
+/**
+ * Получить оттенок из массива с цветами
+ */
+@function get($color, $shade: "base") {
+	@if (meta.type-of($color) == 'color') {
+		$color: _get-color-name($color);
+	}
+
+	$_shades: map.get($_result-colors, $color);
+	@return map.get($_shades, $shade);
+}
+
+/**
+ * Получить базовый цвет
+ */
+@function base($color) {
+	@return get($color);
+}
+
+/**
+ * Получить светлый оттенок
+ */
+@function light($color) {
+	@return get($color, "light");
+}
+
+/**
+ * Получить темный оттенок
+ */
+@function dark($color) {
+	@return get($color, "dark");
+}
+
+/**
+ * Получить цвет контента
+ */
+@function content($color) {
+	@return get($color, "content");
+}
