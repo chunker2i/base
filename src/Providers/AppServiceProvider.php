@@ -11,7 +11,7 @@ class AppServiceProvider extends ServiceProvider
 	public function boot():void {
 		$this->publishesScss([
 			'app.scss',
-			'config/_colors.scss',
+			'config/_colors.scss'
 		]);
 	}
 
