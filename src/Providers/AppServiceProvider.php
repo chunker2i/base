@@ -9,8 +9,67 @@ class AppServiceProvider extends ServiceProvider
 	}
 
 	public function boot():void {
-		$this->publishes([
-			__DIR__ . '/../../resources/scss/config/_colors.scss' => resource_path('scss/config/_colors.scss'),
+		$this->publishesScss([
+			'app.scss',
+			'config/_colors.scss',
 		]);
+	}
+
+	/**
+	 * Публикация SCSS-файлов пакета
+	 *
+	 * @param array $files
+	 * @return void
+	 */
+	protected function publishesScss(array $files):void {
+		$paths = [];
+
+		foreach ($files as $file) {
+			$key = $this->packageScssPath($file);
+			$value = $this->projectScssPath($file);
+			$paths[$key] = $value;
+		}
+
+		$this->publishes($paths, ['resources', 'scss']);
+	}
+
+	/**
+	 * Путь к корневой папке пакета
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function packageRootPath(string $path = ''):string {
+		return __DIR__ . '/../../' . $path;
+	}
+
+	/**
+	 * Путь к папке пакета с ресурсами
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function packageResourcePath(string $path = ''):string {
+		return $this->packageRootPath('resources/' . $path);
+	}
+
+	/**
+	 * Путь к папке пакета с SCSS
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function packageScssPath(string $path = ''):string {
+		return $this->packageResourcePath('scss/' . $path);
+	}
+
+	/**
+	 * Путь к папке проекта с SCSS
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function projectScssPath(string $path = ''):string {
+		return resource_path('scss/' . $path);
 	}
 }
