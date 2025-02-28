@@ -1,0 +1,132 @@
+@use "sass:map";
+@use "@config/viewports" as config;
+
+
+// Подготовка границ для удобного использования
+$_phone-portrait-max: map.get(config.$tablet, "min") - 1px;
+$_phone-max: map.get(config.$phone, "max");
+
+$_tablet-min: map.get(config.$tablet, "min");
+$_tablet-portrait-max: map.get(config.$phone, "max");
+$_tablet-landscape-min: map.get(config.$phone, "max") + 1px;
+$_tablet-max: map.get(config.$tablet, "max");
+
+$_laptop-min: map.get(config.$tablet, "max") + 1px;
+$_laptop-max: map.get(config.$laptop, "max");
+
+$_wide-min: map.get(config.$laptop, "max") + 1px;
+
+
+
+
+/**
+ * Вертикальная ориентация
+ */
+@mixin portrait {
+	@media (orientation: portrait) {
+		@content
+	}
+}
+
+/**
+ * Горизонтальная ориентация
+ */
+@mixin landscape {
+	@media (orientation: landscape) {
+		@content
+	}
+}
+
+/**
+ * Смартфон
+ */
+@mixin phone {
+	@media (max-width: $_phone-portrait-max) or ((max-width: $_phone-max) and (orientation: landscape)) {
+		@content
+	}
+}
+
+/**
+ * Смартфон в вертикальной ориентации
+ */
+@mixin phone-portrait {
+	@media ((max-width: $_phone-portrait-max) and (orientation: portrait)) {
+		@content
+	}
+}
+
+/**
+ * Смартфон в горизонтальной ориентации
+ */
+@mixin phone-landscape {
+	@media ((max-width: $_phone-max) and (orientation: landscape)) {
+		@content
+	}
+}
+
+/*
+ * Планшет
+ */
+@mixin tablet {
+	@media (
+		(min-width: $_tablet-min) and (max-width: $_tablet-portrait-max) and (orientation: portrait)
+	) or (
+		(min-width: $_tablet-landscape-min) and (max-width: $_tablet-max)
+	) {
+		@content
+	}
+}
+
+/**
+ * Планшет в вертикальной ориентации
+ */
+@mixin tablet-portrait {
+	@media ((min-width: $_tablet-min) and (max-width: $_tablet-max) and (orientation: portrait)) {
+		@content
+	}
+}
+
+/**
+ * Планшет в горизонтальной ориентации
+ */
+@mixin tablet-landscape {
+	@media ((min-width: $_tablet-landscape-min) and (max-width: $_tablet-max) and (orientation: landscape)) {
+		@content
+	}
+}
+
+/**
+ * Мобильные устройства: смартфоны и планшеты
+ */
+@mixin mobile {
+	@media (max-width: $_tablet-max) {
+		@content
+	}
+}
+
+/**
+ * Ноутбуки
+ */
+@mixin laptop {
+	@media (min-width: $_laptop-min) and (max-width: $_laptop-max) {
+		@content
+	}
+}
+
+/**
+ * Широкоэкранные устройства
+ */
+@mixin wide {
+	@media (min-width: $_wide-min) {
+		@content
+	}
+}
+
+/**
+ * Настольные устройства: ноутбуки и широкоэкранники
+ */
+@mixin desktop {
+	@media (min-width: $_laptop-min) {
+		@content
+	}
+}

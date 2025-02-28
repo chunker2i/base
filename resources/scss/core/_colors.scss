@@ -24,13 +24,13 @@
  *  `light` — светлый оттенок базового цвета
  *  `dark` — тёмный оттенок базового цвета
  *  `content` — цвет контента: если базовый цвет тёмный, то контент будет белым,
-                а если базовый цвет светлый, то контент будет тёмно-серым.
+ *              а если базовый цвет светлый, то контент будет тёмно-серым.
  */
 $_base-colors: meta.module-variables(config);
 $_result-colors: ();
 @each $_name, $_value in $_base-colors {
 	// Обрабатываем только цвета
-	@if (meta.type-of($_value) == 'color') {
+	@if (meta.type-of($_value) == "color") {
 
 		// Подготовка массива с оттенками
 		$_shades: (
@@ -49,9 +49,9 @@ $_result-colors: ();
 
 		// Определение цвета контента в зависимости от светлоты базового цвета
 		@if $_brightness > 50% {
-			$_shades: map.set($_shades, 'content', #222);
+			$_shades: map.set($_shades, "content", #222);
 		} @else {
-			$_shades: map.set($_shades, 'content', #fff);
+			$_shades: map.set($_shades, "content", #fff);
 		}
 
 		// Сохранение массива с оттенками в массив с цветами
@@ -75,7 +75,7 @@ $_result-colors: ();
  * Получить оттенок из массива с цветами
  */
 @function get($color, $shade: "base") {
-	@if (meta.type-of($color) == 'color') {
+	@if (meta.type-of($color) == "color") {
 		$color: _get-color-name($color);
 	}
 
