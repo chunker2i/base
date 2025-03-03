@@ -3,15 +3,14 @@
 
 
 // Подготовка границ для удобного использования
-$_phone-portrait-max: map.get(config.$tablet, "min") - 1px;
-$_phone-max: map.get(config.$phone, "max");
+$_phone-portrait-max: map.get(config.$tablet-portrait, "min") - 1px;
+$_phone-landscape-max: map.get(config.$tablet-landscape, "min") - 1px;
 
-$_tablet-min: map.get(config.$tablet, "min");
-$_tablet-portrait-max: map.get(config.$phone, "max");
-$_tablet-landscape-min: map.get(config.$phone, "max") + 1px;
-$_tablet-max: map.get(config.$tablet, "max");
+$_tablet-portrait-min: map.get(config.$tablet-portrait, "min");
+$_tablet-landscape-min: map.get(config.$tablet-landscape, "min");
+$_tablet-max: map.get(config.$tablet-landscape, "max");
 
-$_laptop-min: map.get(config.$tablet, "max") + 1px;
+$_laptop-min: map.get(config.$tablet-landscape, "max") + 1px;
 $_laptop-max: map.get(config.$laptop, "max");
 
 $_wide-min: map.get(config.$laptop, "max") + 1px;
@@ -41,7 +40,7 @@ $_wide-min: map.get(config.$laptop, "max") + 1px;
  * Смартфон
  */
 @mixin phone {
-	@media (max-width: $_phone-portrait-max) or ((max-width: $_phone-max) and (orientation: landscape)) {
+	@media (max-width: $_phone-portrait-max) or ((max-width: $_phone-landscape-max) and (orientation: landscape)) {
 		@content
 	}
 }
@@ -59,7 +58,7 @@ $_wide-min: map.get(config.$laptop, "max") + 1px;
  * Смартфон в горизонтальной ориентации
  */
 @mixin phone-landscape {
-	@media ((max-width: $_phone-max) and (orientation: landscape)) {
+	@media ((max-width: $_phone-landscape-max) and (orientation: landscape)) {
 		@content
 	}
 }
@@ -69,7 +68,7 @@ $_wide-min: map.get(config.$laptop, "max") + 1px;
  */
 @mixin tablet {
 	@media (
-		(min-width: $_tablet-min) and (max-width: $_tablet-portrait-max) and (orientation: portrait)
+		(min-width: $_tablet-portrait-min) and (max-width: $_tablet-max) and (orientation: portrait)
 	) or (
 		(min-width: $_tablet-landscape-min) and (max-width: $_tablet-max)
 	) {
@@ -81,7 +80,7 @@ $_wide-min: map.get(config.$laptop, "max") + 1px;
  * Планшет в вертикальной ориентации
  */
 @mixin tablet-portrait {
-	@media ((min-width: $_tablet-min) and (max-width: $_tablet-max) and (orientation: portrait)) {
+	@media ((min-width: $_tablet-portrait-min) and (max-width: $_tablet-max) and (orientation: portrait)) {
 		@content
 	}
 }
