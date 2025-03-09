@@ -14,5 +14,24 @@
 				"Chunker2i\\Base\\Providers\\AppServiceProvider"
 			]
 		}
+	},
+	"scripts": {
+		"post-install-cmd": [
+			"@install-npm-dependencies"
+		],
+		"post-update-cmd": [
+			"@install-npm-dependencies"
+		],
+		"post-package-install": [
+			"@install-npm-dependencies"
+		],
+		"post-package-update": [
+			"@install-npm-dependencies"
+		],
+		"install-npm-dependencies": [
+			"echo 'Installing npm dependencies...'",
+			"npm install",
+			"npm install -D sass-embedded"
+		]
 	}
 }
