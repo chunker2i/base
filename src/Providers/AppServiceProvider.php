@@ -9,11 +9,15 @@ class AppServiceProvider extends ServiceProvider
 	}
 
 	public function boot():void {
+
 		$this->publishesScss([
 			'app.scss',
 			'config/_colors.scss',
 			'config/_viewports.scss',
 		]);
+
+		$this->loadViewsFrom($this->packageViewsPath('utils'), 'utils');
+
 	}
 
 	/**
@@ -62,6 +66,16 @@ class AppServiceProvider extends ServiceProvider
 	 */
 	protected function packageScssPath(string $path = ''):string {
 		return $this->packageResourcePath('scss/' . $path);
+	}
+
+	/**
+	 * Путь к папке пакета с представлениями
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function packageViewsPath(string $path = ''):string {
+		return $this->packageResourcePath('views/' . $path);
 	}
 
 	/**
