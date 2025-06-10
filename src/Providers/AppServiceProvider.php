@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider
 
 		$this->publishesScss([
 			'app.scss',
+			'certain/_body.scss',
 			'config/_colors.scss',
 			'config/_viewports.scss',
 		]);

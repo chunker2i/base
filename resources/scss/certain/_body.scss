@@ -1,0 +1,9 @@
+@use "@core/colors";
+
+body {
+	line-height: 24rem;
+	font-size: 16rem;
+	font-family: "Geologica Variable", sans-serif;
+	color: colors.content(colors.$content);
+	background-color: colors.base(colors.$content);
+}
